@@ -24,7 +24,12 @@ class User(db.Model):
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+	user = User('John Doe', 'john.doe@example.com')
+	db.session.add(user)
+	db.session.commit()
+	all_users = User.query.all()
+	name= all_users[0].name
+	return render_template('index.html', name=name)
 
 
 @app.route('/robots.txt')
@@ -35,4 +40,4 @@ def robots():
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port, debug=True)
+    app.run(host='127.0.0.1', port=port, debug=True)
