@@ -24,10 +24,11 @@ class User(db.Model):
 
 @app.route('/')
 def home():
-	user = User('John Doe', 'john.doe@example.com')
-	db.session.add(user)
-	db.session.commit()
-	all_users = User.query.all()
+	#user = User('John Doe', 'john.doe@example.com')
+	#db.session.add(user)
+	#db.session.commit()
+	#all_users = User.query.all()
+	name="Test"
 	name= all_users[0].name
 	return render_template('index.html', name=name)
 
