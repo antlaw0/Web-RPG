@@ -5,8 +5,7 @@ from flask import render_template
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-#app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
-app.config(SQLALCHEMY_DATABASE_URI = os.environ.get(“DATABASE_URL”,”postgresql://pguser:password/dbname”)
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 db = SQLAlchemy(app)
 
 
@@ -30,7 +29,7 @@ def home():
 	#db.session.commit()
 	#all_users = User.query.all()
 	name="Test"
-	name= all_users[0].name
+	#name= all_users[0].name
 	return render_template('index.html', name=name)
 
 
@@ -40,6 +39,6 @@ def robots():
     res.mimetype = 'text/plain'
     return res
 
-if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='127.0.0.1', port=port, debug=True)
+#if __name__ == '__main__':
+port = int(os.environ.get('PORT', 5000))
+app.run(host='127.0.0.1', port=port, debug=True)
