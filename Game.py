@@ -21,14 +21,46 @@ currentRoom = Room.rooms[0]
 	
 #this method reads a string which if it is a vallid command, executes the input command
 def processCommand(cmd):
-	global x, y
+	global currentRoom
+	msg=[]
+	if cmd in ["N", "n", "North", "north", "E", "e", "East", "east", "S", "s", "South", "south", "W", "w", "West", "west"]:
+		msg.append(move(cmd))
+		msg.insert(0, currentRoom.name)
+	else:
+		msg.append("Command not recognized.")
+	return msg
+	
+	
+#this method loops through all rooms in the rooms array until it finds the room at the player's x and y position 
+def get_room():
+	global x, y, enteredRoom
+	for i in range(len(Room.rooms)):
+		global currentRoom
+		r = Room.rooms[i]
+		if r.x == x and r.y == y:
+			return Room.rooms[i]
+			enteredRoom=False
+			break
+
+#This method returns whether or not a room exists at given coordinates			
+def room_exists(x, y):
+	
+	roomFound = False
+	for i in range(len(Room.rooms)):
+		if Room.rooms[i].x==x and Room.rooms[i].y == y:
+			roomFound = True
+			break
+	return roomFound
+		
+def move(cmd):
+	global x,y, currentRoom
 	if cmd == "North" or cmd == "north" or cmd == "n":
 		if room_exists(x,y-1):
 			y-=1
 			currentRoom =  get_room()
 			return currentRoom.description
 		else:
-			return "You can't go that way."
+			 return "You can't go that way."
 	elif cmd == "West" or cmd == "west" or cmd == "w":
 		if room_exists(x-1,y):
 			x-=1
@@ -53,31 +85,7 @@ def processCommand(cmd):
 		
 		else:
 			return "You can't go that way."
-	else:
-		return "command not recognized"
 		
-#this method loops through all rooms in the rooms array until it finds the room at the player's x and y position 
-def get_room():
-	global x, y, enteredRoom
-	for i in range(len(Room.rooms)):
-		global currentRoom
-		r = Room.rooms[i]
-		if r.x == x and r.y == y:
-			return Room.rooms[i]
-			enteredRoom=False
-			break
-
-#This method returns whether or not a room exists at given coordinates			
-def room_exists(x, y):
-	
-	roomFound = False
-	for i in range(len(Room.rooms)):
-		if Room.rooms[i].x==x and Room.rooms[i].y == y:
-			roomFound = True
-			break
-	return roomFound
-		
-			
 
 
 	
