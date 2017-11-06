@@ -4,8 +4,10 @@
 <br>
 
 {% for message in output %}
+{% autoescape false %}
 {{message}}
 <br>
+{% endautoescape %}
 {% endfor %}
 <br>
 <form method="POST" action="">

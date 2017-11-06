@@ -1,4 +1,5 @@
 import Room
+import Entity
 
 #init variables
 x=0 #x position of player
@@ -16,18 +17,27 @@ Room.create_room("Grand Staircase", "You are at the foot of a grand staircase th
 
 #init first starting room
 currentRoom = Room.rooms[0]
-
-
+party=[]
+char1=  Entity.Entity("Char1", "First character", 100, 100, 100, 20, 20, 20, 20, 20, 20)
+party.append(char1)
 	
 #this method reads a string which if it is a vallid command, executes the input command
 def processCommand(cmd):
-	global currentRoom
+	global currentRoom, x, y
 	msg=[]
-	if cmd in ["N", "n", "North", "north", "E", "e", "East", "east", "S", "s", "South", "south", "W", "w", "West", "west"]:
+	
+	if cmd == "N" or cmd == "n" or cmd == "North" or cmd == "north" or cmd == "E" or cmd == "e" or cmd == "East" or cmd == "east" or cmd == "S" or cmd == "s" or cmd == "South" or cmd == "south" or cmd == "W" or cmd == "w" or cmd == "West" or cmd == "west":
 		msg.append(move(cmd))
-		msg.insert(0, currentRoom.name)
+		
+	elif cmd == "test":
+		msg.append(char1.showStats())
+		
 	else:
 		msg.append("Command not recognized.")
+	#initial messages
+	msg.insert(0, str(x)+", "+str(y))
+	msg.insert(1, currentRoom.name)
+	msg.insert(2, currentRoom.description)
 	return msg
 	
 	
@@ -58,14 +68,14 @@ def move(cmd):
 		if room_exists(x,y-1):
 			y-=1
 			currentRoom =  get_room()
-			return currentRoom.description
+			return "Moving north."
 		else:
 			 return "You can't go that way."
 	elif cmd == "West" or cmd == "west" or cmd == "w":
 		if room_exists(x-1,y):
 			x-=1
 			currentRoom =  get_room()
-			return currentRoom.description
+			return "Moving west."
 		
 		else:
 			return "You can't go that way."
@@ -73,7 +83,7 @@ def move(cmd):
 		if room_exists(x+1,y):
 			x+=1
 			currentRoom =  get_room()
-			return currentRoom.description
+			return "Moving east."
 		
 		else:
 			return"You can't go that way."
@@ -81,11 +91,10 @@ def move(cmd):
 		if room_exists(x,y+1):
 			y+=1
 			currentRoom =  get_room()
-			return currentRoom.description
-		
+			return "Moving south."
 		else:
 			return "You can't go that way."
 		
 
-
+	
 	
