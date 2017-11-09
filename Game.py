@@ -25,12 +25,20 @@ party.append(char1)
 def processCommand(cmd):
 	global currentRoom, x, y
 	msg=[]
+	cmd=cmd.split(" ")
 	
-	if cmd == "N" or cmd == "n" or cmd == "North" or cmd == "north" or cmd == "E" or cmd == "e" or cmd == "East" or cmd == "east" or cmd == "S" or cmd == "s" or cmd == "South" or cmd == "south" or cmd == "W" or cmd == "w" or cmd == "West" or cmd == "west":
-		msg.append(move(cmd))
+	if len(cmd) ==1 and cmd[0] in ["N", "n", "North", "north", "E", "e", "East", "east", "S", "s", "South", "south", "W", "w", "West", "west"]:
+		msg.append(move(cmd[0]))
 		
-	elif cmd == "test":
-		msg.append(char1.showStats())
+	elif len(cmd) == 2 and cmd[1] == "stats":
+		found=False
+		for char in party:
+			if char.name == cmd[0]:
+				msg.append(char.showStats())
+				found=True
+				break
+		if found == False:
+			msg.append("Character not in party.")
 		
 	else:
 		msg.append("Command not recognized.")
