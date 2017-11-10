@@ -45,3 +45,10 @@ class Entity(object):
 		
 	def showStats(self):
 		return "Name:  "+self.name+"<br> Description:  "+self.description+"<br> Level:  "+str(self.level)+"<br>HP:  "+str(self.hp)+" \ "+str(self.maxhp)
+	
+	def showInventory(self):
+		inv=""
+		inv+=self.name+"'s inventory: <br>"
+		for i in self.inventory:
+			inv+=i.name+" "+str(i.quantity)+"<br>"
+		return inv

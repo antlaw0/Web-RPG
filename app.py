@@ -26,7 +26,7 @@ class User(db.Model):
 
 @app.route('/', methods=['POST','GET'])
 def index():
-	output="Output goes here"
+	output=""
 	if request.method == 'POST':
 		command=request.form['command']
 		output=Game.processCommand(command)

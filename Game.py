@@ -1,5 +1,8 @@
 import Room
 import Entity
+import Item
+import Apparel
+import Weapon
 
 #init variables
 x=0 #x position of player
@@ -15,11 +18,23 @@ Room.create_room("Library", "Rows of dusty tomes line the walls of this old libr
 Room.create_room("Dining Room", "An ornate dining room complete with long table with twelve chairs. A vase of flowers are in the center of the table atop a white table cloth.", 1,0)
 Room.create_room("Grand Staircase", "You are at the foot of a grand staircase that leads up to the second floor.", 0,-1)
 
+#Apparel
+#a=Apparel.apparel(name, description, type, weight, value, physdef, magdef):
+
+a1= Apparel.Apparel("Clothes", "simple clothes.", 1, 1, 5, 0, 0)
+a2=Apparel.Apparel("Shoes", "Simple pair of shoes", 2, 2, 2, 0, 0)
+a3=Apparel.Apparel("Hat", "A simple hat", 3, 1, 1, 0, 0)
+	
+	
+	
 #init first starting room
 currentRoom = Room.rooms[0]
 party=[]
 char1=  Entity.Entity("Char1", "First character", 100, 100, 100, 20, 20, 20, 20, 20, 20)
+char1.inventory.append(a1)
 party.append(char1)
+char2=  Entity.Entity("Char2", "Second character", 100, 100, 100, 20, 20, 20, 20, 20, 20)
+party.append(char2)
 	
 #this method reads a string which if it is a vallid command, executes the input command
 def processCommand(cmd):
@@ -40,8 +55,21 @@ def processCommand(cmd):
 		if found == False:
 			msg.append("Character not in party.")
 		
+	
+	elif len(cmd) == 2 and cmd[1] == "inventory":
+		found=False
+		for char in party:
+			if char.name == cmd[0]:
+				msg.append(char.showInventory())
+				found=True
+				break
+		if found == False:
+			msg.append("Character not in party.")
+		
 	else:
 		msg.append("Command not recognized.")
+	
+	
 	#initial messages
 	msg.insert(0, str(x)+", "+str(y))
 	msg.insert(1, currentRoom.name)
