@@ -1,33 +1,20 @@
 import roomList
 import Entity
 import Item
-import Apparel
-import Weapon
+import apparelList
+import weaponList
 
 #init variables
 x=0 #x position of player
 y=0 #y position of player
 enteredRoom=False
 
-	
-
-#Apparel
-#a=Apparel.apparel(name, description, type, weight, value, physdef, magdef):
-
-a1= Apparel.Apparel("Clothes", "simple clothes.", 1, 1, 5, 0, 0)
-a2=Apparel.Apparel("Shoes", "Simple pair of shoes", 2, 2, 2, 0, 0)
-a3=Apparel.Apparel("Hat", "A simple hat", 3, 1, 1, 0, 0)
-	
-	#Weapons
-w1=Weapon.Weapon( "Dagger", "A small dagger", 1, 1, 5, 5, 1)
-	
-	
 #init first starting room
 currentRoom = roomList.rooms[0]
 party=[]
 char1=  Entity.Entity("Char1", "First character", 100, 100, 100, 20, 20, 20, 20, 20, 20)
-char1.inventory.append(a1)
-char1.inventory.append(w1)
+char1.inventory.append(apparelList.get(0))
+char1.inventory.append(weaponList.get(0))
 party.append(char1)
 char2=  Entity.Entity("Char2", "Second character", 100, 100, 100, 20, 20, 20, 20, 20, 20)
 party.append(char2)
