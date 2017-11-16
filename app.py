@@ -24,6 +24,8 @@ class User(db.Model):
         return '<Name %r>' % self.name
 
 
+
+
 @app.route('/', methods=['POST','GET'])
 def index():
 	output=""

@@ -8,3 +8,8 @@ class Weapon(Item.Item):
 		self.type=type
 		self.weight=weight
 		self.value=value
+		self.damage=damage
+		self.range=range
+		
+	def examine(self):
+		return self.name+"<br> "+self.description+"<br> Damage: "+str(self.damage)+"<br> Weight: "+str(self.weight)+"<br> Value: "+str(self.value)+"<br> Range: "+str(self.range)

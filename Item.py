@@ -13,3 +13,5 @@ class Item(object):
 		self.type=type
 		self.weight=weight
 		self.value=value
+		
+	
