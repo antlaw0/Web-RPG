@@ -1,6 +1,6 @@
-import Item
+import inventoryObject
 
-class Weapon(Item.Item):
+class Weapon(inventoryObject.inventoryObject):
 	
 	def __init__(self, name, description, type, weight, value, damage, range):
 		self.name=name

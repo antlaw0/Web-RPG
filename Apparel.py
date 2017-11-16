@@ -1,6 +1,6 @@
-import Item
+import inventoryObject
 
-class Apparel(Item.Item):
+class Apparel(inventoryObject.inventoryObject):
 	
 	def __init__(self, name, description, type, weight, value, physdef, magdef):
 		self.name=name

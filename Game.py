@@ -1,6 +1,6 @@
 import roomList
 import Entity
-import Item
+import itemList
 import apparelList
 import weaponList
 
@@ -15,6 +15,7 @@ party=[]
 char1=  Entity.Entity("Char1", "First character", 100, 100, 100, 20, 20, 20, 20, 20, 20)
 char1.inventory.append(apparelList.get(0))
 char1.inventory.append(weaponList.get(0))
+char1.inventory.append(itemList.get(0))
 party.append(char1)
 char2=  Entity.Entity("Char2", "Second character", 100, 100, 100, 20, 20, 20, 20, 20, 20)
 party.append(char2)

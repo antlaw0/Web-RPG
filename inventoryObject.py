@@ -1,6 +1,10 @@
-import inventoryObject
-
-class Item(inventoryObject.inventoryObject):
+class inventoryObject(object):
+	name=""
+	description=""
+	type=0
+	weight=0
+	value=0
+	quantity=1
 	
 	
 	def __init__(self, name, description, type, weight, value):
