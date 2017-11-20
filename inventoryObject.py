@@ -5,6 +5,7 @@ class inventoryObject(object):
 	weight=0
 	value=0
 	quantity=1
+	equipped=False
 	
 	
 	def __init__(self, name, description, type, weight, value):

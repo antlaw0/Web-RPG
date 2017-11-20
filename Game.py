@@ -51,8 +51,9 @@ def processCommand(cmd):
 			msg.append("Character not in party.")
 		
 	elif len(cmd) == 3 and cmd[1] == "equip":
-		equipItem(cmd[0], cmd[2])
-	
+		msg.append(equipItem(cmd[0], cmd[2]))
+	elif len(cmd) == 2 and cmd[1] == "equipment":
+		msg.append(showEquipment(cmd[0]))
 	
 	else:
 		msg.append("Command not recognized.")
@@ -137,12 +138,27 @@ def equipItem(charName, itemName):
 			#type 1: apparel, subtype 1: footwear
 			if i.type == 1 and i.subType == 1:
 				char.equipFeet(i)
+				return char.name+" equips  "+char.feet.name
 			#apparel, legwear
 			elif i.type ==1 and i.subType == 2:
 				char.equipLegs(i)
+				return char.name+" equips "+char.legs.name
 			elif i.type ==1 and i.subType == 3:
 				char.equipBody(i)
+				return char.name+" equips "+char.body.name
 			else:
 				return char.name+" does not have that item."
 				
 			
+			
+def showEquipment(charName):
+	foundChar=False
+	for char in party:
+		if charName == char.name:
+			foundChar=True
+			break
+	if foundChar == False:
+		return "Character not in party."
+	else:
+		return char.showEquipment()
+		

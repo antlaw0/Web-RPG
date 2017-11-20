@@ -54,17 +54,45 @@ class Entity(object):
 	def showEquipment(self):
 		eq=""
 		eq+=self.name+"'s Equipment:  <br>"
-		for i in self.equipment:
-			if i != None:
-				eq+=i.name+"<br>"
+		if self.leftHand == None:
+			eq+="Left hand:  none <br>"
+		else:
+			eq+="Left hand: "+self.leftHand.name+"<br>"
+		if self.rightHand == None:
+			eq+="Right hand:  none <br>"
+		else:
+			eq+="Right hand: "+self.rightHand.name+"<br>"
+		if self.head == None:
+			eq+="Head:  none <br>"
+		else:
+			eq+="Head: "+self.head.name+"<br>"
+		if self.body == None:
+			eq+="Body:  none <br>"
+		else:
+			eq+="Body: "+self.body.name+"<br>"
+		if self.arms == None:
+			eq+="Arms:  none <br>"
+		else:
+			eq+="Arms: "+self.arms.name+"<br>"
+		if self.legs == None:
+			eq+="Legs:  none <br>"
+		else:
+			eq+="Legs: "+self.legs.name+"<br>"
+		if self.feet == None:
+			eq+="Feet:  none <br>"
+		else:
+			eq+="Feet: "+self.feet.name+"<br>"
 		return eq
 		
 	def showInventory(self):
 		inv=""
 		inv+=self.name+"'s inventory: <br>"
 		for i in self.inventory:
-			
-			inv+=i.name+" "+str(i.quantity)+"<br>"
+			if i.equipped == True:
+				e="(equipped)"
+			else:
+				e=""
+			inv+=i.name+" "+str(i.quantity)+" "+e
 		return inv
 		
 	def equipFeet(self, obj):
