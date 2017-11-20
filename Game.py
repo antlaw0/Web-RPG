@@ -50,6 +50,10 @@ def processCommand(cmd):
 		if found == False:
 			msg.append("Character not in party.")
 		
+	elif len(cmd) == 3 and cmd[1] == "equip":
+		equipItem(cmd[0], cmd[2])
+	
+	
 	else:
 		msg.append("Command not recognized.")
 	
@@ -118,3 +122,27 @@ def move(cmd):
 
 	
 	
+def equipItem(charName, itemName):
+	foundChar=False
+	for char in party:
+		if charName == char.name:
+			foundChar=True
+			break
+	if foundChar == False:
+		return "Character not in party."
+		
+	#loop through char's inventory
+	for i in char.inventory:
+		if i.name == itemName:
+			#type 1: apparel, subtype 1: footwear
+			if i.type == 1 and i.subType == 1:
+				char.equipFeet(i)
+			#apparel, legwear
+			elif i.type ==1 and i.subType == 2:
+				char.equipLegs(i)
+			elif i.type ==1 and i.subType == 3:
+				char.equipBody(i)
+			else:
+				return char.name+" does not have that item."
+				
+			

@@ -11,29 +11,15 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80))
-    email = db.Column(db.String(120), unique=True)
-
-    def __init__(self, name, email):
-        self.name = name
-        self.email = email
-
-    def __repr__(self):
-        return '<Name %r>' % self.name
-
-
-
+from models import User
 
 @app.route('/', methods=['POST','GET'])
 def index():
-	output=""
-	if request.method == 'POST':
-		command=request.form['command']
-		output=Game.processCommand(command)
-	return render_template('index.html', output=output)
-
+    output=""
+    if request.method == 'POST':
+        command=request.form['command']
+        output=Game.processCommand(command)
+    return render_template('index.html', output=output)
 
 
 #if __name__ == '__main__':

@@ -10,6 +10,7 @@ class Entity(object):
 	maxmp=1
 	mp=maxmp
 	inventory=[]
+	equipment=[]
 	strength=1
 	dexterity=1
 	agility=1
@@ -19,10 +20,14 @@ class Entity(object):
 	leftHand=None
 	rightHand=None
 	head=None
+	equipment.append(head)
 	body=None
+	equipment.append(body)
 	legs=None
+	equipment.append(legs)
 	arms=None
 	feet=None
+	equipment.append(feet)
 	skill=[]
 	for i in range(20):
 		skill.append(0)
@@ -46,9 +51,45 @@ class Entity(object):
 	def showStats(self):
 		return "Name:  "+self.name+"<br> Description:  "+self.description+"<br> Level:  "+str(self.level)+"<br>HP:  "+str(self.hp)+" \ "+str(self.maxhp)
 	
+	def showEquipment(self):
+		eq=""
+		eq+=self.name+"'s Equipment:  <br>"
+		for i in self.equipment:
+			if i != None:
+				eq+=i.name+"<br>"
+		return eq
+		
 	def showInventory(self):
 		inv=""
 		inv+=self.name+"'s inventory: <br>"
 		for i in self.inventory:
+			
 			inv+=i.name+" "+str(i.quantity)+"<br>"
 		return inv
+		
+	def equipFeet(self, obj):
+		if self.feet != None:
+			self.feet=obj
+			obj.equipped=True
+		else:
+			self.feet.equipped=False
+			self.feet=obj
+			obj.equipped=True
+	
+	def equipLegs(self, obj):
+		if self.legs != None:
+			self.legs=obj
+			obj.equipped=True
+		else:
+			self.legs.equipped=False
+			self.legs=obj
+			obj.equipped=True
+		
+	def equipBody(self, obj):
+		if self.body != None:
+			self.body.equipped=False
+			self.body=obj
+			self.body.equipped=True
+		else:
+			self.body=obj
+			self.body.equipped=True
