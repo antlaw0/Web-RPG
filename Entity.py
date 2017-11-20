@@ -9,7 +9,6 @@ class Entity(object):
 	sp=maxsp
 	maxmp=1
 	mp=maxmp
-	inventory=[]
 	equipment=[]
 	strength=1
 	dexterity=1
@@ -47,6 +46,7 @@ class Entity(object):
 		self.intelligence=intelligence
 		self.willpower=willpower
 		self.charisma=charisma
+		self.inventory=[]
 		
 	def showStats(self):
 		return "Name:  "+self.name+"<br> Description:  "+self.description+"<br> Level:  "+str(self.level)+"<br>HP:  "+str(self.hp)+" \ "+str(self.maxhp)
@@ -92,7 +92,7 @@ class Entity(object):
 				e="(equipped)"
 			else:
 				e=""
-			inv+=i.name+" "+str(i.quantity)+" "+e
+			inv+=i.name+" "+str(i.quantity)+" "+e+"<br>"
 		return inv
 		
 	def equipFeet(self, obj):

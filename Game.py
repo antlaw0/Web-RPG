@@ -125,6 +125,7 @@ def move(cmd):
 	
 def equipItem(charName, itemName):
 	foundChar=False
+	foundItem=False
 	for char in party:
 		if charName == char.name:
 			foundChar=True
@@ -139,16 +140,18 @@ def equipItem(charName, itemName):
 			if i.type == 1 and i.subType == 1:
 				char.equipFeet(i)
 				return char.name+" equips  "+char.feet.name
+				foundItem=True
 			#apparel, legwear
 			elif i.type ==1 and i.subType == 2:
 				char.equipLegs(i)
 				return char.name+" equips "+char.legs.name
+				foundItem=True
 			elif i.type ==1 and i.subType == 3:
 				char.equipBody(i)
 				return char.name+" equips "+char.body.name
-			else:
-				return char.name+" does not have that item."
-				
+				foundItem=True
+		else:
+			return "Item not in "+char.name+"'s inventory."
 			
 			
 def showEquipment(charName):
