@@ -97,12 +97,14 @@ class Entity(object):
 	def showInventory(self):
 		inv=""
 		inv+=self.name+"'s inventory: <br>"
+		n=1
 		for i in self.inventory:
 			if i.equipped == True:
 				e="(equipped)"
 			else:
 				e=""
-			inv+=i.name+" "+str(i.quantity)+" "+e+"<br>"
+			inv+="          "+str(n)+". "+i.name+" "+str(i.quantity)+" "+e+"<br>"
+			n+=1
 		return inv
 		
 	def equipFeet(self, obj):

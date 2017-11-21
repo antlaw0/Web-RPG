@@ -14,7 +14,9 @@ class Room(object):
 	
 	def showThingsInRoom(self):
 		things=""
+		n=1
 		for o in self.thingsInRoom:
-			things+="     <u>"+o.shortDescription+"</u> <br>"
+			things+=str(n)+". <u>"+o.shortDescription+"</u> <br>"
+			n+=1
 		return things
 	

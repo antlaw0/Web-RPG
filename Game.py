@@ -56,9 +56,10 @@ def processCommand(cmd):
 		msg.append(showEquipment(cmd[0]))
 	elif len(cmd) == 1 and cmd[0] == "party":
 		msg.append(showParty())
-	elif len(cmd) >= 2 and cmd[1] == "examine":
-		msg.append(examine(cmd[0], cmd[2:]))
-	
+	elif len(cmd) == 3 and cmd[1] == "look":
+		msg.append(look(cmd[0], cmd[2]))
+	elif len(cmd) == 3 and cmd[1] == "examine":
+		msg.append(examine(cmd[0], cmd[2]))
 	else:
 		msg.append("Command not recognized.")
 	
@@ -181,7 +182,7 @@ def showParty():
 		i+=1
 	return p
 	
-def examine(charName, objName):
+def look(charName, objNum):
 	foundChar=False
 	for char in party:
 		if char.name == charName:
@@ -191,21 +192,32 @@ def examine(charName, objName):
 		return "Character not in party."
 	else:
 		foundObj=False
-		objName=getObject(objName)
-		for o in currentRoom.thingsInRoom:
-			if o.name == objName:
-				foundObj = True
-				obj=o
-				break
-		if foundObj == False:
-			return char.name+" cannot see that item."
+		# if entered index is greater zero less than list of things in room
+		if int(objNum) <= len(currentRoom.thingsInRoom) and int(objNum) >= 0:
+			i=int(objNum)-1
+			description = currentRoom.thingsInRoom[i].longDescription
+			return description
 		else:
-			return obj.longDescription
+			return  "List index out of range."
+		
 			
-def getObject(cmdList):
-	text=""
-	for i in cmdList:
-		text+=i+" "
-	text=text[:-1]
-	return text
-	
+
+			
+def examine(charName, objNum):
+	foundChar=False
+	for char in party:
+		if char.name == charName:
+			foundChar = True
+			break
+	if foundChar == False:
+		return "Character not in party."
+	else:
+		# if entered index is greater zero less than list of things in inventory
+		if int(objNum) <= len(char.inventory) and int(objNum) >= 0:
+			i=int(objNum)-1
+			description = char.inventory[i].longDescription
+			return description
+		else:
+			return  "List index out of range."
+		
+			
