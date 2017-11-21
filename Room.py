@@ -4,15 +4,17 @@ class Room(object):
 	x = 0
 	y = 0
 	
-	def __init__(self, name, description, x, y):
+	def __init__(self, name, shortDescription, longDescription, x, y):
 		self.name = name
-		self.description = description
+		self.shortDescription = shortDescription
+		self.longDescription=longDescription
 		self.x = x
 		self.y = y
+		self.thingsInRoom=[]
 	
-rooms = []
-def create_room(name, description, x, y):
-	room = Room(name, description, x, y)
-	rooms.append(room)
-	return room
+	def showThingsInRoom(self):
+		things=""
+		for o in self.thingsInRoom:
+			things+="     <u>"+o.shortDescription+"</u> <br>"
+		return things
 	

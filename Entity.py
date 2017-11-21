@@ -1,3 +1,10 @@
+"""
+Entity types:
+0. Character
+1. Friendly NPC
+2. Hostile NPC
+"""
+
 class Entity(object):
 	name=""
 	description=""
@@ -31,9 +38,12 @@ class Entity(object):
 	for i in range(20):
 		skill.append(0)
 	
-	def __init__(self, name, description, h, s, m, strength, dexterity, agility, intelligence, willpower, charisma):
+	def __init__(self, name, shortDescription, longDescription, type, subType, h, s, m, strength, dexterity, agility, intelligence, willpower, charisma):
 		self.name=name
-		self.description=description
+		self.shortDescription=shortDescription
+		self.longDescription=longDescription
+		self.type=type
+		self.subType=subType
 		self.maxhp=h
 		self.hp=h
 		self.maxsp=s

@@ -2,9 +2,10 @@ import inventoryObject
 
 class Apparel(inventoryObject.inventoryObject):
 	
-	def __init__(self, name, description, subType, weight, value, physdef, magdef):
+	def __init__(self, name, shortDescription, longDescription, subType, weight, value, physdef, magdef):
 		self.name=name
-		self.description=description
+		self.shortDescription=shortDescription
+		self.longDescription=longDescription
 		self.type=1
 		self.subType=subType
 		self.weight=weight

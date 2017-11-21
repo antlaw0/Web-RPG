@@ -2,9 +2,10 @@ import inventoryObject
 
 class Weapon(inventoryObject.inventoryObject):
 	
-	def __init__(self, name, description, subType, weight, value, damage, range):
+	def __init__(self, name, shortDescription, longDescription, subType, weight, value, damage, range):
 		self.name=name
-		self.description=description
+		self.shortDescription=shortDescription
+		self.longDescription=longDescription
 		self.type=2
 		self.subType=subType
 		self.weight=weight

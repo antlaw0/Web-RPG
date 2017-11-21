@@ -12,12 +12,12 @@ enteredRoom=False
 #init first starting room
 currentRoom = roomList.rooms[0]
 party=[]
-char1=  Entity.Entity("Char1", "First character", 100, 100, 100, 20, 20, 20, 20, 20, 20)
+char1=  Entity.Entity("Char1", "First character", "Here goes the long description", 0, 0, 100, 100, 100, 20, 20, 20, 20, 20, 20)
 char1.inventory.append(apparelList.get(0))
 char1.inventory.append(weaponList.get(0))
 char1.inventory.append(itemList.get(0))
 party.append(char1)
-char2=  Entity.Entity("Char2", "Second character", 100, 100, 100, 20, 20, 20, 20, 20, 20)
+char2=  Entity.Entity("Char2", "Second character", "Here goes the long description.", 0, 0, 100, 100, 100, 20, 20, 20, 20, 20, 20)
 party.append(char2)
 	
 #this method reads a string which if it is a vallid command, executes the input command
@@ -54,6 +54,10 @@ def processCommand(cmd):
 		msg.append(equipItem(cmd[0], cmd[2]))
 	elif len(cmd) == 2 and cmd[1] == "equipment":
 		msg.append(showEquipment(cmd[0]))
+	elif len(cmd) == 1 and cmd[0] == "party":
+		msg.append(showParty())
+	elif len(cmd) >= 2 and cmd[1] == "examine":
+		msg.append(examine(cmd[0], cmd[2:]))
 	
 	else:
 		msg.append("Command not recognized.")
@@ -63,6 +67,7 @@ def processCommand(cmd):
 	msg.insert(0, str(x)+", "+str(y))
 	msg.insert(1, currentRoom.name)
 	msg.insert(2, currentRoom.description)
+	msg.insert(3, currentRoom.showThingsInRoom())
 	return msg
 	
 	
@@ -165,3 +170,42 @@ def showEquipment(charName):
 	else:
 		return char.showEquipment()
 		
+
+		
+def showParty():
+	p=""
+	i=1
+	p+="Characters in party: <br>"
+	for char in party:
+		p+=str(i)+":  "+char.name+"<br>"
+		i+=1
+	return p
+	
+def examine(charName, objName):
+	foundChar=False
+	for char in party:
+		if char.name == charName:
+			foundChar = True
+			break
+	if foundChar == False:
+		return "Character not in party."
+	else:
+		foundObj=False
+		objName=getObject(objName)
+		for o in currentRoom.thingsInRoom:
+			if o.name == objName:
+				foundObj = True
+				obj=o
+				break
+		if foundObj == False:
+			return char.name+" cannot see that item."
+		else:
+			return obj.longDescription
+			
+def getObject(cmdList):
+	text=""
+	for i in cmdList:
+		text+=i+" "
+	text=text[:-1]
+	return text
+	

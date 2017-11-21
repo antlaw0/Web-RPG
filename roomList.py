@@ -1,15 +1,21 @@
 import Room
+import Entity
 
 rooms=[]
-def createRoom(name, description, x,y):
-	r = Room.Room(name, description, x,y)
-	rooms.append(r)
-
+	
 #add rooms to map
-createRoom("Big room", "A big room. This is where you start the game.", 0,0)
-createRoom("A Small room", "A small room. There is not much in this room, just a wooden table and a lamp giving faint light throughout the room.", -1,0)
-createRoom("Library", "Rows of dusty tomes line the walls of this old library. A desk and chair are at the far end where presumably people sit and read.", 0,1)
-createRoom("Dining Room", "An ornate dining room complete with long table with twelve chairs. A vase of flowers are in the center of the table atop a white table cloth.", 1,0)
-createRoom("Grand Staircase", "You are at the foot of a grand staircase that leads up to the second floor.", 0,-1)
+room=Room.Room("Rogue Encampment", "A small encampment.", "This is where you start the game. It is a small encampment in a forest clearing where a few travellers have set up a permanent camp. A few tents and huts circle the perimiter while a large bonfire flanked by some weery travellers sitting on fallen logs.", 0,0)
+entity=  Entity.Entity("Helper Dude", "A helpful looking test entity stands here.", "He is a human male. He seems friendly and willing to assist the developer in testing out certain functions.", 1, 0, 100, 100, 100, 20, 20, 20, 20, 20, 20)
+room.thingsInRoom.append(entity)
+rooms.append(room)
+room=Room.Room("Western edge of Rogue Encampment", "A heavily wooded section of forest.", "Trees ranging from ten to fifty feet tall surround you. The smell of earth is strong in the air. You hear sounds of human activity nearby to the east.", -1,0)
+rooms.append(room)
+room=Room.Room("South of Rogue Encampment", "Heavily wooded section of forest.", "Trees ranging from ten to fifty feet tall surround you. The smell of earth is strong in the air. You hear sounds of human activity nearby to the north.", 0,1)
+rooms.append(room)
+room=Room.Room("Eastern edge of Rogue Encampment", "Heavily wooded section of forest.", "Trees ranging from ten to fifty feet tall surround you. The smell of earth is strong in the air. You hear sounds of human activity nearby to the west.", 1,0)
+rooms.append(room)
+room=Room.Room("North of Rogue Encampment","Heavily wooded section of forest.", "Trees ranging from ten to fifty feet tall surround you. The smell of earth is strong in the air. You hear sounds of human activity nearby to the south.",  0,-1)
+rooms.append(room)
+
 
 

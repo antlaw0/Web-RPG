@@ -14,13 +14,11 @@ Weapon sub types:
 import Weapon
 
 weaponList=[]
-def createWeapon(name, description, subType, weight, value, damage, range):
-	w=Weapon.Weapon( "Dagger", "A small dagger", 1, 1, 5, 5, 1)
-	weaponList.append(w)
-
+	
 
 #create list of all weapons
-createWeapon( "Dagger", "A small dagger", 1, 1, 5, 5, 1)
+w=Weapon.Weapon( "Dagger", "A small dagger", "This is a small, metal dagger approximately 8 inches long with a leather grip.", 1, 1, 5, 5, 1)
+weaponList.append(w)
 	
 	
 

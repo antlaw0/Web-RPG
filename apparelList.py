@@ -15,15 +15,16 @@ Apparel sub types:
 import Apparel
 
 apparelList=[]
-def createApparel(name, description, type, weight, value, physdef, magdef):
-	a=Apparel.Apparel(name, description, type, weight, value, physdef, magdef)
-	apparelList.append(a)
 
 
 #list of all apparels
-createApparel("Clothes", "simple clothes.", 3, 1, 5, 0, 0)
-createApparel("Shoes", "Simple pair of shoes", 1, 2, 2, 0, 0)
-createApparel("Hat", "A simple hat", 6, 1, 1, 0, 0)
+a=Apparel.Apparel("Tunic", "A simple cloth tunic.", "This is a simple cloth tunic that looks like it can fit most humanoid races.", 3, 1, 5, 0, 0)
+apparelList.append(a)
+a=Apparel.Apparel("Shoes", "A simple pair of shoes", "They are a simple pair of brown, leather shoes worn by most common folk.", 1, 2, 2, 0, 0)
+apparelList.append(a)
+a=Apparel.Apparel("Hat", "A simple hat", "It is a simple cloth cap worn by most common folk.", 6, 1, 1, 0, 0)
+apparelList.append(a)
+
 	
 
 def get(id):
