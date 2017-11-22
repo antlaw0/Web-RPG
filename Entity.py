@@ -59,7 +59,20 @@ class Entity(object):
 		self.inventory=[]
 		
 	def showStats(self):
-		return "Name:  "+self.name+"<br> Description:  "+self.description+"<br> Level:  "+str(self.level)+"<br>HP:  "+str(self.hp)+" \ "+str(self.maxhp)
+		string=""
+		string+="Name:  "+self.name+"<br>"
+		string+=self.shortDescription+"<br>"
+		string+="Level:  "+str(self.level)+"<br>"
+		string+="HP:  "+str(self.hp)+" \ "+str(self.maxhp)+"<br>"
+		string+="SP:  "+str(self.sp)+" \ "+str(self.maxsp)+"<br>"
+		string+="MP:  "+str(self.mp)+" \ "+str(self.maxmp)+"<br>"
+		string+="Strength:  "+str(self.strength)+"<br>"
+		string+="Dexterity:  "+str(self.dexterity)+"<br>"
+		string+="Agility:  "+str(self.agility)+"<br>"
+		string+="Intelligence:  "+str(self.intelligence)+"<br>"
+		string+="Charisma:  "+str(self.charisma)+"<br>"
+		string+="Willpower:  "+str(self.willpower)+"<br>"
+		return string
 	
 	def showEquipment(self):
 		eq=""
@@ -103,7 +116,7 @@ class Entity(object):
 				e="(equipped)"
 			else:
 				e=""
-			inv+="          "+str(n)+". "+i.name+" "+str(i.quantity)+" "+e+"<br>"
+			inv+=str(n)+". "+i.name+" "+str(i.quantity)+" "+e+"<br>"
 			n+=1
 		return inv
 		
@@ -133,3 +146,17 @@ class Entity(object):
 		else:
 			self.body=obj
 			self.body.equipped=True
+			
+	def hasCurrency(self):
+		found=False
+		for i in self.inventory:
+			if i.type == 0 and i.subType == 0:
+				#this is gold
+				found=True
+				break
+		return found
+		
+	def getCurrency(self):
+		for i in self.inventory:
+			if i.type == 0 and i.subType == 0:
+				return i

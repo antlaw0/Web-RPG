@@ -60,6 +60,9 @@ def processCommand(cmd):
 		msg.append(look(cmd[0], cmd[2]))
 	elif len(cmd) == 3 and cmd[1] == "examine":
 		msg.append(examine(cmd[0], cmd[2]))
+	elif len(cmd) == 3 and cmd[1] == "take":
+		msg.append(take(cmd[0], cmd[2]))
+	
 	else:
 		msg.append("Command not recognized.")
 	
@@ -221,3 +224,28 @@ def examine(charName, objNum):
 			return  "List index out of range."
 		
 			
+def take(charName, objNum):
+	foundChar=False
+	for char in party:
+		if char.name == charName:
+			foundChar = True
+			break
+	if foundChar == False:
+		return "Character not in party."
+	else:
+		# if entered index is greater zero less than list of things in room
+		if int(objNum) <= len(currentRoom.thingsInRoom) and int(objNum) >= 0:
+			i=int(objNum)-1
+			obj = currentRoom.thingsInRoom[i]
+			#if gold
+			if obj.type == 0 and obj.subType == 0:
+				if char.hasCurrency() == True:
+					currencyObject=char.getCurrency()
+					currencyObject.quantity+=obj.quantity
+				else:
+					char.inventory.insert(0, obj)
+				currentRoom.thingsInRoom.remove(obj)
+			return char.name+" takes "+obj.name
+		else:
+			return  "List index out of range."
+		
