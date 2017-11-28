@@ -17,7 +17,7 @@ weaponList=[]
 	
 
 #create list of all weapons
-w=Weapon.Weapon( "Dagger", "A small dagger", "This is a small, metal dagger approximately 8 inches long with a leather grip.", 1, 1, 5, 5, 1)
+w=Weapon.Weapon( "Dagger", "A small dagger", "This is a small, metal dagger approximately 8 inches long with a leather grip.", 1, 1, 5, 5, 1, 1)
 weaponList.append(w)
 	
 	

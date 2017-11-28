@@ -3,6 +3,9 @@ import Entity
 import itemList
 import apparelList
 import weaponList
+import Weapon
+import Apparel
+import random
 
 #init variables
 x=0 #x position of player
@@ -58,6 +61,10 @@ def processCommand(cmd):
 		msg.append(showParty())
 	elif len(cmd) == 3 and cmd[1] == "look":
 		msg.append(look(cmd[0], cmd[2]))
+	elif len(cmd) == 2 and cmd[1] == "look":
+		msg.append(lookRoom())
+	elif len(cmd) == 3 and cmd[1] == "attack":
+		msg.append(attack(cmd[0], cmd[2]))
 	elif len(cmd) == 3 and cmd[1] == "examine":
 		msg.append(examine(cmd[0], cmd[2]))
 	elif len(cmd) == 3 and cmd[1] == "take":
@@ -132,9 +139,10 @@ def move(cmd):
 
 	
 	
-def equipItem(charName, itemName):
+def equipItem(charName, itemNum):
 	foundChar=False
 	foundItem=False
+	itemNum = int(itemNum)
 	for char in party:
 		if charName == char.name:
 			foundChar=True
@@ -142,26 +150,31 @@ def equipItem(charName, itemName):
 	if foundChar == False:
 		return "Character not in party."
 		
-	#loop through char's inventory
-	for i in char.inventory:
-		if i.name == itemName:
-			#type 1: apparel, subtype 1: footwear
-			if i.type == 1 and i.subType == 1:
-				char.equipFeet(i)
-				return char.name+" equips  "+char.feet.name
-				foundItem=True
-			#apparel, legwear
-			elif i.type ==1 and i.subType == 2:
-				char.equipLegs(i)
-				return char.name+" equips "+char.legs.name
-				foundItem=True
-			elif i.type ==1 and i.subType == 3:
-				char.equipBody(i)
-				return char.name+" equips "+char.body.name
-				foundItem=True
-		else:
-			return "Item not in "+char.name+"'s inventory."
-			
+	#if entered index within range of length of char's inventory
+	if itemNum <= len(char.inventory) and itemNum > 0:
+		i = char.inventory[itemNum-1]
+		print("Found "+i.name)
+	else:
+		return "List index out of range."
+	#type 1: apparel, subtype 1: footwear
+	if i.type == 1 and i.subType == 1:
+		char.equipFeet(i)
+		return char.name+" equips  "+char.feet.name
+		foundItem=True
+	#apparel, legwear
+	elif i.type ==1 and i.subType == 2:
+		char.equipLegs(i)
+		return char.name+" equips "+char.legs.name
+		foundItem=True
+	elif i.type ==1 and i.subType == 3:
+		char.equipBody(i)
+		return char.name+" equips "+char.body.name
+		foundItem=True
+	elif i.type == 2:
+		return char.equipWeapon(i)
+		foundItem=True
+		print(char.name+" equips "+i.name)
+	
 			
 def showEquipment(charName):
 	foundChar=False
@@ -249,3 +262,110 @@ def take(charName, objNum):
 		else:
 			return  "List index out of range."
 		
+		
+def lookRoom():
+	return currentRoom.longDescription
+	
+def attack(attackerName, targetNum):
+	resultMessage=""
+	foundChar=False
+	targetNum=int(targetNum)
+	for char in party:
+		if attackerName == char.name:
+			attacker=char
+			foundChar=True
+	if foundChar == False:
+		return "Character not in party."
+	foundTarget=False
+	#if target index within range
+	if targetNum <= len(currentRoom.thingsInRoom) and targetNum > 0 :
+		foundTarget = True
+		target= currentRoom.thingsInRoom[targetNum-1]
+	else:
+		foundTarget=False
+	if foundTarget == False:
+		return "List index out of range."
+	if isinstance(target, Entity.Entity) == False:
+		return "You cannot attack that."
+	#target is an instance of Entity...
+	#if target is friendly
+	elif target.type == 1:
+		return target.name+" is not hostile."
+	#target is hostile
+	elif target.type == 2:
+		resultMessage+=calcLeftHandDamage(attacker, target)
+		resultMessage+= calcRightHandDamage(attacker, target)
+		return resultMessage
+
+def calcRightHandDamage(attacker, target):
+	hand = attacker.rightHand
+	resultMessage=""
+	noMessage=False
+	if isinstance(hand, Apparel.Apparel):
+		return resultMessage
+	elif hand == None:
+		handName="unarmed"
+		handAttribute=attacker.strength
+		handDamage=0
+	elif isinstance(hand, Weapon.Weapon):
+		#if melee
+		handName=hand.name
+		handDamage=hand.damage
+		if hand.range == 1:
+			handAttribute=attacker.strength
+		else: #ranged attack
+			handAttribute=attacker.dexterity
+	dmg = (handDamage + random.randint(0, handAttribute)) - target.getPhysDef()
+	#check if negative damage
+	if dmg < 0:
+		dmg=0
+	target.hp-= dmg
+	resultMessage+=attacker.name+" attacks "+target.name+" with "+handName+" for "+str(dmg)+" points of damage."
+	if target.hp <= 0:
+		resultMessage+=target.name+" has been defeated."
+		xpAmount=target.xp
+		resultMessage+="Party gains "+str(xpAmount)+" experience."
+		partyGainXp(xpAmount)
+		currentRoom.thingsInRoom.remove(target)
+	return resultMessage
+	
+	
+		
+def calcLeftHandDamage(attacker, target):
+	hand = attacker.leftHand
+	resultMessage=""
+	noMessage=False
+	if isinstance(hand, Apparel.Apparel):
+		return resultMessage
+	elif hand == None:
+		handName="unarmed"
+		handAttribute=attacker.strength
+		handDamage=0
+	elif isinstance(hand, Weapon.Weapon):
+		#if melee
+		handName=hand.name
+		handDamage=hand.damage
+		if hand.range == 1:
+			handAttribute=attacker.strength
+		else: #ranged attack
+			handAttribute=attacker.dexterity
+	dmg = (handDamage + random.randint(0, handAttribute)) - target.getPhysDef()
+	#check if negative damage
+	if dmg < 0:
+		dmg=0
+	target.hp-= dmg
+	resultMessage+=attacker.name+" attacks "+target.name+" with "+handName+" for "+str(dmg)+" points of damage."
+	if target.hp <= 0:
+		resultMessage+=target.name+" has been defeated."
+		xpAmount=target.xp
+		resultMessage+="Party gains "+str(xpAmount)+" experience."
+		partyGainXp(xpAmount)
+		currentRoom.thingsInRoom.remove(target)
+	return resultMessage
+	
+def partyGainXp(amount):
+	chars = len(party)
+	eachXP = round(amount/chars,0)
+	for char in party:
+		char.xp+=eachXP
+		print(char.name+" gains "+str(eachXP)+" XP.")

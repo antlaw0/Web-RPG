@@ -9,7 +9,7 @@ class Entity(object):
 	name=""
 	description=""
 	level=1
-	exp=0
+	
 	maxhp=1
 	hp=maxhp
 	maxsp=1
@@ -57,6 +57,7 @@ class Entity(object):
 		self.willpower=willpower
 		self.charisma=charisma
 		self.inventory=[]
+		self.xp=0
 		
 	def showStats(self):
 		string=""
@@ -146,7 +147,28 @@ class Entity(object):
 		else:
 			self.body=obj
 			self.body.equipped=True
+	
+	def equipWeapon(self, obj):
+		if obj.hands == 1:
+			if self.rightHand == None:
+				self.rightHand = obj
+				obj.equipped=True
+				return self.name+" equips "+obj.name+" in right hand."
+			elif self.leftHand == None:
+				self.leftHand = obj
+				obj.equipped=True
+				return self.name+" equips "+obj.name+" in left hand."
+		else: #must be two-handed
+			if self.leftHand == None and self.rightHand == None:
+				self.rightHand = obj
+				self.leftHand = obj
+				obj.equipped = True
+				return self.name+" equips "+obj.name
+			else: #does not have both hands empty
+				return self.name+" needs both hands empty to equip this weapon."
 			
+				
+	
 	def hasCurrency(self):
 		found=False
 		for i in self.inventory:
@@ -160,3 +182,17 @@ class Entity(object):
 		for i in self.inventory:
 			if i.type == 0 and i.subType == 0:
 				return i
+	def getPhysDef(self):
+		total=0
+		if self.head != None:
+			total+=self.head.physdef
+		if self.body != None:
+			total+=self.body.physdef
+		if self.arms != None:
+			total+=self.arms.physdef
+		if self.legs != None:
+			total+= self.legs.physdef
+		if self.feet != None:
+			total+= self.feet.physdef
+		
+		return total
