@@ -151,14 +151,14 @@ class Entity(object):
 	
 	def equipWeapon(self, obj):
 		if obj.hands == 1:
-			if self.rightHand == None:
-				self.rightHand = obj
-				obj.equipped=True
-				return self.name+" equips "+obj.name+" in right hand."
-			elif self.leftHand == None:
+			if self.leftHand == None:
 				self.leftHand = obj
 				obj.equipped=True
 				return self.name+" equips "+obj.name+" in left hand."
+			elif self.rightHand == None:
+				self.rightHand = obj
+				obj.equipped=True
+				return self.name+" equips "+obj.name+" in right hand."
 		else: #must be two-handed
 			if self.leftHand == None and self.rightHand == None:
 				self.rightHand = obj

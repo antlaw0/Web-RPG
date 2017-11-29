@@ -162,8 +162,12 @@ def equipItem(charName, itemNum):
 		print("Found "+i.name)
 	else:
 		return "List index out of range."
+	#if item is already equipped
+	if i.equipped == True:
+		return char.name+" already has "+i.name+" equipped."
+	
 	#type 1: apparel, subtype 1: footwear
-	if i.type == 1 and i.subType == 1:
+	elif i.type == 1 and i.subType == 1:
 		char.equipFeet(i)
 		return char.name+" equips  "+char.feet.name
 		foundItem=True
@@ -313,7 +317,7 @@ def calcDamage(attacker, target):
 			resultMessage+=calcLeftHandDamage(attacker, target)
 			#if left  hand is not two-handed and attacker has not already attacked with left hand
 			if attacker.rightHand != None:
-				if attacker.rightHand != None and attacker.leftHand.hands != 2:
+				if attacker.leftHand.hands != 2:
 				
 					resultMessage+= calcRightHandDamage(attacker, target)
 			#attacker used action point
@@ -404,16 +408,20 @@ def unequip(charName, slotName):
 		return "Character not in party."
 	if slotName == "right" or slotName == "rh" or slotName == "righthand":
 		if char.rightHand != None:
+			n=char.rightHand.name
 			char.rightHand.equipped=False
-			return char.name+" unequips "+char.rightHand.name+" from right hand."
 			char.rightHand = None
+			return char.name+" unequips "+n+" from right hand."
+			
 		else:
 			return char.name+"'s right hand is already empty."
 	elif slotName == "left" or slotName == "lh" or slotName == "lefthand":
 		if char.leftHand != None:
+			n=char.leftHand.name
 			char.leftHand.equipped=False
-			return char.name+" unequips "+char.leftHand.name+" from left hand."
 			char.leftHand = None
+			return char.name+" unequips "+n+" from left hand."
+			
 		else:
 			return char.name+"'s left hand is already empty."
 	elif slotName == "body":
@@ -463,10 +471,10 @@ def wait():
 				#get random target
 				targetIndex = random.randint(0, len(party)-1)
 				target = party[targetIndex]
-				#perform attack calculations
-				calcDamage(o, target)
 				#refresh all party member's action points
 				for char in party:
 					char.ap=1
+				#perform attack calculations
+				return calcDamage(o, target)
 				
 	
