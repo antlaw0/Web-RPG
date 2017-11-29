@@ -44,6 +44,7 @@ class Entity(object):
 		self.longDescription=longDescription
 		self.type=type
 		self.subType=subType
+		self.ap=1
 		self.maxhp=h
 		self.hp=h
 		self.maxsp=s

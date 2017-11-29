@@ -19,6 +19,8 @@ char1=  Entity.Entity("Char1", "First character", "Here goes the long descriptio
 char1.inventory.append(apparelList.get(0))
 char1.inventory.append(weaponList.get(0))
 char1.inventory.append(itemList.get(0))
+char1.inventory.append(weaponList.get(1))
+
 party.append(char1)
 char2=  Entity.Entity("Char2", "Second character", "Here goes the long description.", 0, 0, 100, 100, 100, 20, 20, 20, 20, 20, 20)
 party.append(char2)
@@ -55,6 +57,8 @@ def processCommand(cmd):
 		
 	elif len(cmd) == 3 and cmd[1] == "equip":
 		msg.append(equipItem(cmd[0], cmd[2]))
+	elif len(cmd) == 3 and cmd[1] == "unequip":
+		msg.append(unequip(cmd[0], cmd[2]))
 	elif len(cmd) == 2 and cmd[1] == "equipment":
 		msg.append(showEquipment(cmd[0]))
 	elif len(cmd) == 1 and cmd[0] == "party":
@@ -65,6 +69,8 @@ def processCommand(cmd):
 		msg.append(lookRoom())
 	elif len(cmd) == 3 and cmd[1] == "attack":
 		msg.append(attack(cmd[0], cmd[2]))
+	elif len(cmd) == 1 and cmd[0] == "wait":
+		msg.append(wait())
 	elif len(cmd) == 3 and cmd[1] == "examine":
 		msg.append(examine(cmd[0], cmd[2]))
 	elif len(cmd) == 3 and cmd[1] == "take":
@@ -293,10 +299,28 @@ def attack(attackerName, targetNum):
 		return target.name+" is not hostile."
 	#target is hostile
 	elif target.type == 2:
-		resultMessage+=calcLeftHandDamage(attacker, target)
-		resultMessage+= calcRightHandDamage(attacker, target)
-		return resultMessage
+		return calcDamage(attacker, target)
 
+		
+def calcDamage(attacker, target):
+	resultMessage=""
+	#does attacker have any action points
+	if attacker.ap == 0:
+		return attacker.name+" does not have any actions left."
+	else:
+		#if target is in list of things in room or in party list
+		if target in currentRoom.thingsInRoom or target in party:
+			resultMessage+=calcLeftHandDamage(attacker, target)
+			#if left  hand is not two-handed and attacker has not already attacked with left hand
+			if attacker.rightHand != None:
+				if attacker.rightHand != None and attacker.leftHand.hands != 2:
+				
+					resultMessage+= calcRightHandDamage(attacker, target)
+			#attacker used action point
+			attacker.ap-=1
+			return resultMessage
+				
+		
 def calcRightHandDamage(attacker, target):
 	hand = attacker.rightHand
 	resultMessage=""
@@ -320,8 +344,8 @@ def calcRightHandDamage(attacker, target):
 	if dmg < 0:
 		dmg=0
 	target.hp-= dmg
-	resultMessage+=attacker.name+" attacks "+target.name+" with "+handName+" for "+str(dmg)+" points of damage."
-	if target.hp <= 0:
+	resultMessage+=attacker.name+" attacks "+target.name+" with "+handName+" for "+str(dmg)+" points of damage.<br>"
+	if target.hp <= 0 and target in currentRoom.thingsInRoom:
 		resultMessage+=target.name+" has been defeated."
 		xpAmount=target.xp
 		resultMessage+="Party gains "+str(xpAmount)+" experience."
@@ -354,7 +378,7 @@ def calcLeftHandDamage(attacker, target):
 	if dmg < 0:
 		dmg=0
 	target.hp-= dmg
-	resultMessage+=attacker.name+" attacks "+target.name+" with "+handName+" for "+str(dmg)+" points of damage."
+	resultMessage+=attacker.name+" attacks "+target.name+" with "+handName+" for "+str(dmg)+" points of damage.<br>"
 	if target.hp <= 0:
 		resultMessage+=target.name+" has been defeated."
 		xpAmount=target.xp
@@ -369,3 +393,80 @@ def partyGainXp(amount):
 	for char in party:
 		char.xp+=eachXP
 		print(char.name+" gains "+str(eachXP)+" XP.")
+		
+def unequip(charName, slotName):
+	foundChar=False
+	for char in party:
+		if charName == char.name:
+			foundChar = True
+			break
+	if foundChar == False:
+		return "Character not in party."
+	if slotName == "right" or slotName == "rh" or slotName == "righthand":
+		if char.rightHand != None:
+			char.rightHand.equipped=False
+			return char.name+" unequips "+char.rightHand.name+" from right hand."
+			char.rightHand = None
+		else:
+			return char.name+"'s right hand is already empty."
+	elif slotName == "left" or slotName == "lh" or slotName == "lefthand":
+		if char.leftHand != None:
+			char.leftHand.equipped=False
+			return char.name+" unequips "+char.leftHand.name+" from left hand."
+			char.leftHand = None
+		else:
+			return char.name+"'s left hand is already empty."
+	elif slotName == "body":
+		if char.body != None:
+			char.body.equipped=False
+			return char.name+" unequips "+char.body.name+"."
+			char.body=None
+		else:
+			return char.name+"'s body equipment slot is already unequipped."
+	elif slotName == "head":
+		if char.head != None:
+			char.head.equipped=False
+			return char.name+" unequips "+char.head.name+"."
+			char.head=None
+		else:
+			return char.name+"'s head equipment slot is already empty."
+	elif slotName == "legs":
+		if char.legs != None:
+			char.legs.equipped=False
+			return char.name+" unequips "+char.legs.name+"."
+			char.legs=None
+		else:
+			return char.name+"'s legs equipment slot is already empty."
+	elif slotName == "arms":
+		if char.arms != None:
+			char.arms.equipped=False
+			return char.name+" unequips "+char.arms+"."
+			char.arms=None
+		else:
+			return char.name+"'s arms equipment slot is already empty."
+	elif slotName == "feet":
+		if char.feet != None:
+			char.feet.equipped=False
+			return char.name+" unequips "+char.feet.name+"."
+			char.feet=None
+		else:
+			return char.name+"'s feet equipment slot is already empty."
+	else:
+		return slotName+" is not an equipment slot."
+		
+def wait():
+	for o in currentRoom.thingsInRoom:
+		# if object is instance of Entity
+		if isinstance(o, Entity.Entity):
+			#if entity is hostile
+			if o.type == 2:
+				#get random target
+				targetIndex = random.randint(0, len(party)-1)
+				target = party[targetIndex]
+				#perform attack calculations
+				calcDamage(o, target)
+				#refresh all party member's action points
+				for char in party:
+					char.ap=1
+				
+	
