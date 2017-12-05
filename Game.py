@@ -1,3 +1,5 @@
+import models
+from app import db
 import roomList
 import Entity
 import itemList
@@ -16,6 +18,7 @@ enteredRoom=False
 currentRoom = roomList.rooms[0]
 party=[]
 char1=  Entity.Entity("Char1", "First character", "Here goes the long description", 0, 0, 100, 100, 100, 20, 20, 20, 20, 20, 20)
+print(char1.stringifyStats())
 char1.inventory.append(apparelList.get(0))
 char1.inventory.append(weaponList.get(0))
 char1.inventory.append(itemList.get(0))
@@ -69,6 +72,10 @@ def processCommand(cmd):
 		msg.append(lookRoom())
 	elif len(cmd) == 3 and cmd[1] == "attack":
 		msg.append(attack(cmd[0], cmd[2]))
+	elif len(cmd) == 1 and cmd[0] == "save":
+		msg.append(save())
+	elif len(cmd) == 3 and cmd[1] == "drop":
+		msg.append(drop(cmd[0], cmd[2]))
 	elif len(cmd) == 1 and cmd[0] == "wait":
 		msg.append(wait())
 	elif len(cmd) == 3 and cmd[1] == "examine":
@@ -477,4 +484,21 @@ def wait():
 				#perform attack calculations
 				return calcDamage(o, target)
 				
+def drop(charName, itemNo):
+	itemNo =int(itemNo)
+	foundChar=False
+	for char in party:
+		if charName == char.name:
+			foundChar = True
+			break
+	if foundChar == False:
+		return "Character not in party."
+	return char.dropItem(itemNo)
+
+def save():
+	c=models.Character(1,char1.stringifyStats(), char2.stringifyStats())
+	db.session.add(c)
+	db.session.commit()
+	return"Save successful"
+	
 	

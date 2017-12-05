@@ -1,3 +1,5 @@
+import Game
+
 """
 Entity types:
 0. Character
@@ -197,3 +199,39 @@ class Entity(object):
 			total+= self.feet.physdef
 		
 		return total
+	
+	def dropItem(self, itemNo):
+		if itemNo >0 and itemNo <= len(self.inventory):
+			i=self.inventory[itemNo-1]
+			Game.currentRoom.thingsInRoom.append(i)
+			self.inventory.remove(i)
+			return self.name+" dropped "+i.name+"."
+		else:
+			return "List index out of range."
+
+			
+			
+	def stringifyStats(self):
+		s=""
+		s+=self.name+";"
+		s+=self.shortDescription+";"
+		s+=self.longDescription+";"
+		s+=str(self.type)+";"
+		s+=str(self.subType)+";"
+		s+=str(self.ap)+";"
+		s+=str(self.maxhp)+";"
+		s+=str(self.hp)+";"
+		s+=str(self.maxsp)+";"
+		s+=str(self.sp)+";"
+		s+=str(self.maxmp)+";"
+		s+=str(self.mp)+";"
+		s+=str(self.strength)+";"
+		s+=str(self.dexterity)+";"
+		s+=str(self.agility)+";"
+		s+=str(self.intelligence)+";"
+		s+=str(self.willpower)+";"
+		s+=str(self.charisma)+";"
+		return s
+		
+	
+	

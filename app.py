@@ -1,5 +1,4 @@
 import os
-
 from flask import Flask
 from flask import render_template, request, session
 from flask_sqlalchemy import SQLAlchemy
@@ -15,6 +14,7 @@ from models import User
 
 @app.route('/', methods=['POST','GET'])
 def index():
+    #db.create_all()
     output=""
     if request.method == 'POST':
         command=request.form['command']
