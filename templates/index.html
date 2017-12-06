@@ -3,20 +3,26 @@
 <h1><center>Game</h1></center>
 <br>
 
-{% for message in output %}
-{% autoescape false %}
-{{message}}
+
+
+<div id="messages">
+</div>
+
+
 <br>
-{% endautoescape %}
-{% endfor %}
-<br>
-<form method="POST" action="">
+
 <input type="text" name="command" id="command"></input>
-</form>
+
+<script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+  <script src="static/js/clientgame.js"></script>
+
+</html>
+
 
 {% extends 'base.html' %}
 
 {% block content %}
 {% endblock %}
-
-</html>

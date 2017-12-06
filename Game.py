@@ -27,16 +27,22 @@ char1.inventory.append(weaponList.get(1))
 party.append(char1)
 char2=  Entity.Entity("Char2", "Second character", "Here goes the long description.", 0, 0, 100, 100, 100, 20, 20, 20, 20, 20, 20)
 party.append(char2)
-	
+
+
+def processCommandReturnJSON(cmd):
+	#placeholder, obviously replace with your own code
+	msg = ['hello', 'turn left', 'you are on the moon']
+	return msg
+
 #this method reads a string which if it is a vallid command, executes the input command
 def processCommand(cmd):
 	global currentRoom, x, y
 	msg=[]
 	cmd=cmd.split(" ")
-	
+
 	if len(cmd) ==1 and cmd[0] in ["N", "n", "North", "north", "E", "e", "East", "east", "S", "s", "South", "south", "W", "w", "West", "west"]:
 		msg.append(move(cmd[0]))
-		
+
 	elif len(cmd) == 2 and cmd[1] == "stats":
 		found=False
 		for char in party:
@@ -46,8 +52,8 @@ def processCommand(cmd):
 				break
 		if found == False:
 			msg.append("Character not in party.")
-		
-	
+
+
 	elif len(cmd) == 2 and cmd[1] == "inventory":
 		found=False
 		for char in party:
@@ -57,7 +63,7 @@ def processCommand(cmd):
 				break
 		if found == False:
 			msg.append("Character not in party.")
-		
+
 	elif len(cmd) == 3 and cmd[1] == "equip":
 		msg.append(equipItem(cmd[0], cmd[2]))
 	elif len(cmd) == 3 and cmd[1] == "unequip":
@@ -82,20 +88,20 @@ def processCommand(cmd):
 		msg.append(examine(cmd[0], cmd[2]))
 	elif len(cmd) == 3 and cmd[1] == "take":
 		msg.append(take(cmd[0], cmd[2]))
-	
+
 	else:
 		msg.append("Command not recognized.")
-	
-	
+
+
 	#initial messages
 	msg.insert(0, str(x)+", "+str(y))
 	msg.insert(1, currentRoom.name)
 	msg.insert(2, currentRoom.description)
 	msg.insert(3, currentRoom.showThingsInRoom())
 	return msg
-	
-	
-#this method loops through all rooms in the rooms array until it finds the room at the player's x and y position 
+
+
+#this method loops through all rooms in the rooms array until it finds the room at the player's x and y position
 def get_room():
 	global x, y, enteredRoom
 	for i in range(len(roomList.rooms)):
@@ -106,16 +112,16 @@ def get_room():
 			enteredRoom=False
 			break
 
-#This method returns whether or not a room exists at given coordinates			
+#This method returns whether or not a room exists at given coordinates
 def room_exists(x, y):
-	
+
 	roomFound = False
 	for i in range(len(roomList.rooms)):
 		if roomList.rooms[i].x==x and roomList.rooms[i].y == y:
 			roomFound = True
 			break
 	return roomFound
-		
+
 def move(cmd):
 	global x,y, currentRoom
 	if cmd == "North" or cmd == "north" or cmd == "n":
@@ -130,7 +136,7 @@ def move(cmd):
 			x-=1
 			currentRoom =  get_room()
 			return "Moving west."
-		
+
 		else:
 			return "You can't go that way."
 	elif cmd == "East" or cmd == "east" or cmd == "e":
@@ -138,7 +144,7 @@ def move(cmd):
 			x+=1
 			currentRoom =  get_room()
 			return "Moving east."
-		
+
 		else:
 			return"You can't go that way."
 	elif cmd == "South" or cmd == "south" or cmd == "s":
@@ -148,10 +154,10 @@ def move(cmd):
 			return "Moving south."
 		else:
 			return "You can't go that way."
-		
 
-	
-	
+
+
+
 def equipItem(charName, itemNum):
 	foundChar=False
 	foundItem=False
@@ -162,7 +168,7 @@ def equipItem(charName, itemNum):
 			break
 	if foundChar == False:
 		return "Character not in party."
-		
+
 	#if entered index within range of length of char's inventory
 	if itemNum <= len(char.inventory) and itemNum > 0:
 		i = char.inventory[itemNum-1]
@@ -172,7 +178,7 @@ def equipItem(charName, itemNum):
 	#if item is already equipped
 	if i.equipped == True:
 		return char.name+" already has "+i.name+" equipped."
-	
+
 	#type 1: apparel, subtype 1: footwear
 	elif i.type == 1 and i.subType == 1:
 		char.equipFeet(i)
@@ -191,8 +197,8 @@ def equipItem(charName, itemNum):
 		return char.equipWeapon(i)
 		foundItem=True
 		print(char.name+" equips "+i.name)
-	
-			
+
+
 def showEquipment(charName):
 	foundChar=False
 	for char in party:
@@ -203,9 +209,9 @@ def showEquipment(charName):
 		return "Character not in party."
 	else:
 		return char.showEquipment()
-		
 
-		
+
+
 def showParty():
 	p=""
 	i=1
@@ -214,7 +220,7 @@ def showParty():
 		p+=str(i)+":  "+char.name+"<br>"
 		i+=1
 	return p
-	
+
 def look(charName, objNum):
 	foundChar=False
 	for char in party:
@@ -232,10 +238,10 @@ def look(charName, objNum):
 			return description
 		else:
 			return  "List index out of range."
-		
-			
 
-			
+
+
+
 def examine(charName, objNum):
 	foundChar=False
 	for char in party:
@@ -252,8 +258,8 @@ def examine(charName, objNum):
 			return description
 		else:
 			return  "List index out of range."
-		
-			
+
+
 def take(charName, objNum):
 	foundChar=False
 	for char in party:
@@ -278,11 +284,11 @@ def take(charName, objNum):
 			return char.name+" takes "+obj.name
 		else:
 			return  "List index out of range."
-		
-		
+
+
 def lookRoom():
 	return currentRoom.longDescription
-	
+
 def attack(attackerName, targetNum):
 	resultMessage=""
 	foundChar=False
@@ -312,7 +318,7 @@ def attack(attackerName, targetNum):
 	elif target.type == 2:
 		return calcDamage(attacker, target)
 
-		
+
 def calcDamage(attacker, target):
 	resultMessage=""
 	#does attacker have any action points
@@ -325,13 +331,13 @@ def calcDamage(attacker, target):
 			#if left  hand is not two-handed and attacker has not already attacked with left hand
 			if attacker.rightHand != None:
 				if attacker.leftHand.hands != 2:
-				
+
 					resultMessage+= calcRightHandDamage(attacker, target)
 			#attacker used action point
 			attacker.ap-=1
 			return resultMessage
-				
-		
+
+
 def calcRightHandDamage(attacker, target):
 	hand = attacker.rightHand
 	resultMessage=""
@@ -363,9 +369,9 @@ def calcRightHandDamage(attacker, target):
 		partyGainXp(xpAmount)
 		currentRoom.thingsInRoom.remove(target)
 	return resultMessage
-	
-	
-		
+
+
+
 def calcLeftHandDamage(attacker, target):
 	hand = attacker.leftHand
 	resultMessage=""
@@ -397,14 +403,14 @@ def calcLeftHandDamage(attacker, target):
 		partyGainXp(xpAmount)
 		currentRoom.thingsInRoom.remove(target)
 	return resultMessage
-	
+
 def partyGainXp(amount):
 	chars = len(party)
 	eachXP = round(amount/chars,0)
 	for char in party:
 		char.xp+=eachXP
 		print(char.name+" gains "+str(eachXP)+" XP.")
-		
+
 def unequip(charName, slotName):
 	foundChar=False
 	for char in party:
@@ -419,7 +425,7 @@ def unequip(charName, slotName):
 			char.rightHand.equipped=False
 			char.rightHand = None
 			return char.name+" unequips "+n+" from right hand."
-			
+
 		else:
 			return char.name+"'s right hand is already empty."
 	elif slotName == "left" or slotName == "lh" or slotName == "lefthand":
@@ -428,7 +434,7 @@ def unequip(charName, slotName):
 			char.leftHand.equipped=False
 			char.leftHand = None
 			return char.name+" unequips "+n+" from left hand."
-			
+
 		else:
 			return char.name+"'s left hand is already empty."
 	elif slotName == "body":
@@ -468,7 +474,7 @@ def unequip(charName, slotName):
 			return char.name+"'s feet equipment slot is already empty."
 	else:
 		return slotName+" is not an equipment slot."
-		
+
 def wait():
 	for o in currentRoom.thingsInRoom:
 		# if object is instance of Entity
@@ -483,7 +489,7 @@ def wait():
 					char.ap=1
 				#perform attack calculations
 				return calcDamage(o, target)
-				
+
 def drop(charName, itemNo):
 	itemNo =int(itemNo)
 	foundChar=False
@@ -500,5 +506,3 @@ def save():
 	db.session.add(c)
 	db.session.commit()
 	return"Save successful"
-	
-	
