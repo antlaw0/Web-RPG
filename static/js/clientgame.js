@@ -35,4 +35,8 @@ function showMessages(msgs) {
     messages.appendChild(p);
   }
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 6e0dbe70ea54e2eb12557c0321c13bba86d2f66f

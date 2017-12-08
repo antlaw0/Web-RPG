@@ -30,7 +30,13 @@ party.append(char2)
 
 
 def processCommandReturnJSON(cmd):
+<<<<<<< HEAD
 	return processCommand(cmd)
+=======
+	#placeholder, obviously replace with your own code
+	msg = ['hello', 'turn left', 'you are on the moon']
+	return msg
+>>>>>>> 6e0dbe70ea54e2eb12557c0321c13bba86d2f66f
 
 #this method reads a string which if it is a vallid command, executes the input command
 def processCommand(cmd):
@@ -503,4 +509,8 @@ def save():
 	c=models.Character(1,char1.stringifyStats(), char2.stringifyStats())
 	db.session.add(c)
 	db.session.commit()
+<<<<<<< HEAD
 	return"Save successful"
+=======
+	return"Save successful"
+>>>>>>> 6e0dbe70ea54e2eb12557c0321c13bba86d2f66f
