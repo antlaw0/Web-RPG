@@ -3,23 +3,27 @@ from flask import Flask
 from flask import render_template, request, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-import Game
+from flask import jsonify
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
+import Game
+
+
 from models import User
 
 @app.route('/', methods=['POST','GET'])
 def index():
-    #db.create_all()
-    output=""
-    if request.method == 'POST':
-        command=request.form['command']
-        output=Game.processCommand(command)
-    return render_template('index.html', output=output)
+    return render_template('index.html')
+
+@app.route('/executeCommand', methods=['POST'])
+def command():
+    command=request.form['command']
+    output=Game.processCommandReturnJSON(command)
+    return jsonify(output)
 
 
 #if __name__ == '__main__':
