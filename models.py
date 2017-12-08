@@ -13,13 +13,13 @@ class User(db.Model):
 #Characters table
 class Character(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
-	char1 = db.Column(db.String(10000))
-	char2 = db.Column(db.String(10000))
+	character1 = db.Column(db.String(10000))
+	character2 = db.Column(db.String(10000))
     
-	def __init__(self, id, char1, char2):
+	def __init__(self, id, char1String, char2String):
 		self.id=id
-		self.char1=char1
-		self.char2=char2
+		self.character1=char1String
+		self.character2=char2String
 	
 	
 	

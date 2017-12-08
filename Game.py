@@ -14,6 +14,11 @@ x=0 #x position of player
 y=0 #y position of player
 enteredRoom=False
 
+#db.drop_all()
+#db.create_all()
+	
+
+
 #init first starting room
 currentRoom = roomList.rooms[0]
 party=[]
@@ -78,6 +83,9 @@ def processCommand(cmd):
 		msg.append(attack(cmd[0], cmd[2]))
 	elif len(cmd) == 1 and cmd[0] == "save":
 		msg.append(save())
+	elif len(cmd) == 1 and cmd[0] == "load":
+		msg.append(load())
+	
 	elif len(cmd) == 3 and cmd[1] == "drop":
 		msg.append(drop(cmd[0], cmd[2]))
 	elif len(cmd) == 1 and cmd[0] == "wait":
@@ -479,6 +487,8 @@ def wait():
 		if isinstance(o, Entity.Entity):
 			#if entity is hostile
 			if o.type == 2:
+				#add action point make sure they can attack
+				o.ap+=1
 				#get random target
 				targetIndex = random.randint(0, len(party)-1)
 				target = party[targetIndex]
@@ -500,7 +510,24 @@ def drop(charName, itemNo):
 	return char.dropItem(itemNo)
 
 def save():
-	c=models.Character(1,char1.stringifyStats(), char2.stringifyStats())
-	db.session.add(c)
-	db.session.commit()
-	return"Save successful"
+	global char1, char2
+	if models.Character.query.filter_by(id=1).first() != None:
+		c=models.Character.query.filter_by(id=1).first()
+		c.character1 = char1.stringifyStats()
+		c.character2=char2.stringifyStats()
+		db.session.add(c)
+		db.session.commit()
+
+		return "save successful"
+	else:
+		c=models.Character(1,char1.stringifyStats(), char2.stringifyStats())
+		db.session.add(c)
+		db.session.commit()
+		return "new entry added"
+
+def load():
+	c=models.Character.query.filter_by(id=1).first()
+	string=c.character1
+	string=string.replace(";", "\n")
+	print(string)
+	return "loaded"
