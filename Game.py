@@ -9,40 +9,22 @@ import Weapon
 import Apparel
 import random
 
-#init variables
-x=0 #x position of player
-y=0 #y position of player
-enteredRoom=False
-
-#db.drop_all()
-#db.create_all()
+def main(userid, command):
+	if gameLoaded == False:
+		load(userid)
+	return processCommand(command)
 	
+gameLoaded=False
 
-
-#init first starting room
-currentRoom = roomList.rooms[0]
-party=[]
-char1=  Entity.Entity("Char1", "First character", "Here goes the long description", 0, 0, 100, 100, 100, 20, 20, 20, 20, 20, 20)
-print(char1.stringifyStats())
-char1.inventory.append(apparelList.get(0))
-char1.inventory.append(weaponList.get(0))
-char1.inventory.append(itemList.get(0))
-char1.inventory.append(weaponList.get(1))
-
-party.append(char1)
-char2=  Entity.Entity("Char2", "Second character", "Here goes the long description.", 0, 0, 100, 100, 100, 20, 20, 20, 20, 20, 20)
-party.append(char2)
-
-
-def processCommandReturnJSON(cmd):
-	return processCommand(cmd)
+def processCommandReturnJSON(command):
+	return processCommand(command)
 
 #this method reads a string which if it is a vallid command, executes the input command
 def processCommand(cmd):
-	global currentRoom, x, y
+	global msg, gameLoaded, currentRoom, x, y
 	msg=[]
 	cmd=cmd.split(" ")
-
+		
 	if len(cmd) ==1 and cmd[0] in ["N", "n", "North", "north", "E", "e", "East", "east", "S", "s", "South", "south", "W", "w", "West", "west"]:
 		msg.append(move(cmd[0]))
 
@@ -82,7 +64,7 @@ def processCommand(cmd):
 	elif len(cmd) == 3 and cmd[1] == "attack":
 		msg.append(attack(cmd[0], cmd[2]))
 	elif len(cmd) == 1 and cmd[0] == "save":
-		msg.append(save())
+		msg.append("saving")
 	elif len(cmd) == 1 and cmd[0] == "load":
 		msg.append(load())
 	
@@ -509,25 +491,96 @@ def drop(charName, itemNo):
 		return "Character not in party."
 	return char.dropItem(itemNo)
 
-def save():
+def save(userid):
 	global char1, char2
-	if models.Character.query.filter_by(id=1).first() != None:
-		c=models.Character.query.filter_by(id=1).first()
-		c.character1 = char1.stringifyStats()
-		c.character2=char2.stringifyStats()
-		db.session.add(c)
-		db.session.commit()
+	u=models.User.query.filter_by(id=userid).first()
+	u.character1 = char1.stringifyStats()
+	u.character2 = char2.stringifyStats()
+	#save current x and y position
+	u.status=changeStatus(u.status, 1, x)
+	u.status=changeStatus(u.status, 2, y)
+	
+	db.session.add(u)
+	db.session.commit()
+	return "save successful"
+	
+def load(userid):
+	global currentRoom, gameLoaded, char1, char2, enteredRoom, x, y, party
+	#get currently logged in user
+	u=models.User.query.filter_by(id=userid).first()
+	#convert status string to list
+	statusList=u.status.split(";")
+	#if status string at position 0 is 0, first time starting game
+	if u.status[0] =="0":
+		#init variables
+		x=0 #x position of player
+		y=0 #y position of player
+		enteredRoom=False
+		#init  starting room
+		currentRoom = roomList.rooms[0]
+		party=[]
+		char1=  Entity.Entity("Char1", "First character", "Here goes the long description", 0, 0, 100, 100, 100, 20, 20, 20, 20, 20, 20)
+		print(char1.stringifyStats())
+		char1.inventory.append(apparelList.get(0))
+		char1.inventory.append(weaponList.get(0))
+		char1.inventory.append(itemList.get(0))
+		char1.inventory.append(weaponList.get(1))
 
-		return "save successful"
+		party.append(char1)
+		char2=  Entity.Entity("Char2", "Second character", "Here goes the long description.", 0, 0, 100, 100, 100, 20, 20, 20, 20, 20, 20)
+		party.append(char2)
+		
+		gameLoaded=True	
+		return "loaded"
 	else:
-		c=models.Character(1,char1.stringifyStats(), char2.stringifyStats())
-		db.session.add(c)
-		db.session.commit()
-		return "new entry added"
-
-def load():
-	c=models.Character.query.filter_by(id=1).first()
-	string=c.character1
-	string=string.replace(";", "\n")
-	print(string)
-	return "loaded"
+		x=statusList[1]
+		y=statusList[2]
+		enteredRoom=False
+		currentRoom=get_room()
+		#make characters from saved strings in DB
+		party=[]
+		char1=  Entity.Entity("Unassigned", " character", "Here goes the long description.", 0, 0, 100, 100, 100, 20, 20, 20, 20, 20, 20)
+		unStringifyStats(char1, u.character1)
+		party.append(char1)
+		char2=  Entity.Entity("Unassigned", " character", "Here goes the long description.", 0, 0, 100, 100, 100, 20, 20, 20, 20, 20, 20)
+		unStringifyStats(char2, u.character2)
+		party.append(char2)
+		#change first status element to "1" meaning started new game is true
+		u.status=changeStatus(u.status,0,"1")
+		
+		gameLoaded=True
+		return "New game initialized."
+		
+def unStringifyStats(char, statString):
+	#convert stat string into list
+	statList=statString.split(";")
+	#assign list elements to character attributes
+	char.name=statList[0]
+	char.shortDescription=statList[1]
+	char.longDescription=statList[2]
+	char.type=int(statList[3])
+	char.subType=int(statList[4])
+	char.ap=int(statList[5])
+	char.hp=int(statList[6])
+	char.maxhp=int(statList[7])
+	char.sp=int(statList[8])
+	char.maxsp=int(statList[9])
+	char.mp=int(statList[10])
+	char.maxmp=int(statList[11])
+	char.strength=int(statList[12])
+	char.dexterity=int(statList[13])
+	char.agility=int(statList[14])
+	char.intelligence=int(statList[15])
+	char.willpower=int(statList[16])
+	char.charisma=int(statList[17])
+	
+	
+#takes string, makes it list, changes it at given position, converts back to string, returns new string
+def changeStatus(statusString, pos, newValue):
+	sList=statusString.split(";")
+	sList[pos]=newValue
+	newString=""
+	for element in sList:
+		newString+=element+";"
+	return newString
+	

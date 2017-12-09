@@ -11,8 +11,10 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 import Game
-
 import models
+
+#db.drop_all()
+#db.create_all()
 
 def userExists(email):
 	found=False
@@ -25,6 +27,10 @@ def insertUser(email, username, password):
 	db.session.add(u)
 	db.session.commit()
 		
+def getId(email):
+	u=models.User.query.filter_by(email=email).first()
+	return u.id
+	
 def getPassword(email):
 	u=models.User.query.filter_by(email=email).first()
 	return u.password
@@ -49,6 +55,7 @@ def index():
                 #if password matches password in database
                 if getPassword(email) == password:
                     session['username']=getUsername(email)
+                    session['id']=getId(email)
                     session['email'] = email
                     return render_template('game.html', output="Hi there.", username=session['username'])
     
@@ -102,6 +109,7 @@ def registration():
             #insert new user
             insertUser(email, username, password)
             session['username'] = username
+            session['id']=getId(email)
             session['email']=email
             return render_template('game.html', output="Welcome back.", username=session['username'])
     
@@ -121,7 +129,8 @@ def runGame():
 @app.route('/executeCommand', methods=['POST'])
 def command():
     command=request.form['command']
-    output=Game.processCommandReturnJSON(command)
+    
+    output=Game.main(session['id'], command)
     return jsonify(output)
 
 
