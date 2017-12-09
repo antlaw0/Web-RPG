@@ -1,28 +1,19 @@
-<html>
-<title>The Game</title>
-<h1><center>Game</h1></center>
+<DOCTYPEHTML>
+<title>The Game- Login</title>
+<h1><center>The Game- Login</center></h1>
 <br>
+{% if message%}
+	{{message}}
+	{% endif%}
+<form method="POST" action="/">
+      E-mail: <input type="email" name="email" id="email" required>
+	  <br>
+      Password: <input type="password" name="password" id="password" required>
+      <br>
+	  <input type="submit" name="submit" value="Submit">
+</form>
+<a href="/forgotPassword">Forgot password</a>
+<a href="/registration">Register</a>
 
-
-
-<div id="messages">
-</div>
-
-
-<br>
-
-<input type="text" name="command" id="command"></input>
-
-<script
-  src="https://code.jquery.com/jquery-3.2.1.min.js"
-  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-  crossorigin="anonymous"></script>
-  <script src="static/js/clientgame.js"></script>
 
 </html>
-
-
-{% extends 'base.html' %}
-
-{% block content %}
-{% endblock %}

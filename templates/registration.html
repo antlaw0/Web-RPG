@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<title>The Game- Registration</title>
+<h1><center>The Game- Registration</center></h1>
+        
+
+{% for message in messages %}
+{{message}}
+<br>
+{% endfor %}
+<br>
+<form method="POST" action="">
+      Enter E-mail address:  
+	  <br>
+	  <input type="email" id="email" name="email" required></input>
+	  <br>
+	  Enter desired Username:
+	  <br>
+	  <input type="text" name="username" id="username" required>
+	  <br>
+	  (usernames must be  under 20 characters in length)
+	  <br>
+      Enter Password:
+	  <br>
+	  <input type="password" name="password" id="password" onkeyup="return passwordChanged();" required>
+	  <span id="strength">Type Password</span>
+
+	  <br>
+	  (passwords must be between 8 and 20 characters in length)
+      <br>
+	  Re-enter password: 
+	  <br>
+	  <input type="password" id="password2" name="password2" required>
+	  <br>
+	  <input type="submit" name="submit" value="Register">
+</form>
+<p>Click <a href = '/'>here</a> to return to sign in</p>
+
+</body>
+<script>
+//credit to https://martech.zone/javascript-password-strength/
+//check password strength
+function passwordChanged() {
+var strength = document.getElementById('strength');
+var strongRegex = new RegExp("^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$", "g");
+var mediumRegex = new RegExp("^(?=.{7,})(((?=.*[A-Z])(?=.*[a-z]))|((?=.*[A-Z])(?=.*[0-9]))|((?=.*[a-z])(?=.*[0-9]))).*$", "g");
+var enoughRegex = new RegExp("(?=.{8,}).*", "g");
+var pwd = document.getElementById("password");
+if (pwd.value.length==0) {
+strength.innerHTML = 'Type Password';
+} else if (false == enoughRegex.test(pwd.value)) {
+strength.innerHTML = 'More Characters';
+} else if (strongRegex.test(pwd.value)) {
+strength.innerHTML = '<span style="color:green">Strong!</span>';
+} else if (mediumRegex.test(pwd.value)) {
+strength.innerHTML = '<span style="color:orange">Medium!</span>';
+} else {
+strength.innerHTML = '<span style="color:red">Weak!</span>';
+}
+}
+
+</script>
+
+</html>

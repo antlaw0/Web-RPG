@@ -1,0 +1,33 @@
+<html>
+<title>The Game</title>
+<center>
+<h1>Game</h1>
+{% if username %}
+Logged in as {{username}}
+{%endif%}
+</center>
+<br>
+
+
+
+<div id="messages">
+</div>
+
+
+<br>
+
+<input type="text" name="command" id="command"></input>
+
+<script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+  <script src="static/js/clientgame.js"></script>
+
+</html>
+
+
+{% extends 'base.html' %}
+
+{% block content %}
+{% endblock %}

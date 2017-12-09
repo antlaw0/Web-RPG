@@ -2,13 +2,15 @@ from app import db
 
 #User accounts table
 class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80))
-    email = db.Column(db.String(120), unique=True)
-
-    def __init__(self, name, email):
-        self.name = name
-        self.email = email
+	id = db.Column(db.Integer, primary_key=True)
+	username = db.Column(db.String(80))
+	email = db.Column(db.String(120), unique=True)
+	password = db.Column(db.String(80))
+    
+	def __init__(self, email, username,password):
+		self.username = username
+		self.email = email
+		self.password=password
 		
 #Characters table
 class Character(db.Model):
