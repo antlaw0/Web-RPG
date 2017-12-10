@@ -119,7 +119,7 @@ def registration():
 	
 @app.route('/game', methods=['POST'])
 def runGame():
-	if email in session:
+	if 'email' in session:
 		output="Welcome to The Game."
 		return render_template('game.html', output=output)
 	else:
@@ -129,7 +129,6 @@ def runGame():
 @app.route('/executeCommand', methods=['POST'])
 def command():
     command=request.form['command']
-    
     output=Game.main(session['id'], command)
     return jsonify(output)
 

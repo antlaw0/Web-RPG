@@ -8,24 +8,25 @@ import weaponList
 import Weapon
 import Apparel
 import random
-
-def main(userid, command):
-	if gameLoaded == False:
-		load(userid)
-	return processCommand(command)
-	
 gameLoaded=False
 
-def processCommandReturnJSON(command):
-	return processCommand(command)
+def main(userid, command):
+	endMessages=[]
+	if gameLoaded==False:
+		endMessages.append(load(userid))
+	endMessages.append(processCommand(command))
+	return endMessages
+
 
 #this method reads a string which if it is a vallid command, executes the input command
 def processCommand(cmd):
 	global msg, gameLoaded, currentRoom, x, y
 	msg=[]
 	cmd=cmd.split(" ")
-		
-	if len(cmd) ==1 and cmd[0] in ["N", "n", "North", "north", "E", "e", "East", "east", "S", "s", "South", "south", "W", "w", "West", "west"]:
+	
+	if len(cmd) ==1 and cmd[0] == "start":
+		msg.append(start())
+	elif len(cmd) ==1 and cmd[0] in ["N", "n", "North", "north", "E", "e", "East", "east", "S", "s", "South", "south", "W", "w", "West", "west"]:
 		msg.append(move(cmd[0]))
 
 	elif len(cmd) == 2 and cmd[1] == "stats":
@@ -82,13 +83,15 @@ def processCommand(cmd):
 
 
 	#initial messages
-	msg.insert(0, str(x)+", "+str(y))
-	msg.insert(1, currentRoom.name)
+	msg.insert(0, str(x)+", "+str(y)+"<br>")
+	msg.insert(1, currentRoom.name+"<br>")
 	msg.insert(2, currentRoom.description)
 	msg.insert(3, currentRoom.showThingsInRoom())
 	return msg
 
-
+def start():
+	return""
+	
 #this method loops through all rooms in the rooms array until it finds the room at the player's x and y position
 def get_room():
 	global x, y, enteredRoom
@@ -531,7 +534,7 @@ def load(userid):
 		party.append(char2)
 		
 		gameLoaded=True	
-		return "loaded"
+		return "Welcome back."
 	else:
 		x=statusList[1]
 		y=statusList[2]
@@ -549,8 +552,8 @@ def load(userid):
 		u.status=changeStatus(u.status,0,"1")
 		
 		gameLoaded=True
-		return "New game initialized."
-		
+		return "Welcome to The Game. In this game, you control a party of adventurers as they complete quests, find items, and fight enemies. You type your commands in the box below. You can move in any of the cardinal directions by simply entering the desired direction in the box. North for north, east for east, etc. Alternatively, you can just type the first letter, n for north, etc. For a list of all commands, type help."
+	
 def unStringifyStats(char, statString):
 	#convert stat string into list
 	statList=statString.split(";")
