@@ -60,6 +60,8 @@ class Entity(object):
 		self.willpower=willpower
 		self.charisma=charisma
 		self.inventory=[]
+		self.phrases=[]
+		self.responses=[]
 		self.xp=0
 		
 	def showStats(self):
@@ -235,3 +237,21 @@ class Entity(object):
 		
 	
 	
+	
+	def addResponse(self, phrase, response):
+		self.phrases.append(phrase)
+		self.responses.append(response)
+	
+	def getResponse(self, sayString):
+		
+		#get index of phrase in phrase list
+		found=False
+		for p in self.phrases:
+			if sayString  == p:
+				found=True
+				i=self.phrases.index(sayString)
+				break
+		if found == False:
+			return self.name+" has nothing important to say about that."
+		else:
+			return self.responses[i]

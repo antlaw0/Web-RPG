@@ -10,7 +10,7 @@ item=Item.Item("Gold", "A small pile of gold coins are lying on the ground here.
 item.quantity=5
 room.thingsInRoom.append(item)
 entity=  Entity.Entity("Helper Dude", "A helpful looking test entity stands here.", "He is a human male. He seems friendly and willing to assist the developer in testing out certain functions.", 1, 0, 100, 100, 100, 20, 20, 20, 20, 20, 20)
-
+entity.addResponse("help", "I would be happy to help.")
 room.thingsInRoom.append(entity)
 entity=  Entity.Entity("Goblin", "A menacing looking goblin stands here.", "It appears to be a goblin brandishing a wicked looking dagger. It is bristling and snarling at you.", 2, 0, 25, 50, 15, 10, 25, 25, 10, 10, 10)
 entity.xp+=10

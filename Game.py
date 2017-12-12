@@ -64,6 +64,8 @@ def processCommand(cmd):
 		msg.append(lookRoom())
 	elif len(cmd) == 3 and cmd[1] == "attack":
 		msg.append(attack(cmd[0], cmd[2]))
+	elif len(cmd) == 4 and cmd[1] == "sayto":
+		msg.append(say(cmd[0], cmd[2], cmd[3]))
 	elif len(cmd) == 1 and cmd[0] == "save":
 		msg.append("saving")
 	elif len(cmd) == 1 and cmd[0] == "load":
@@ -587,3 +589,25 @@ def changeStatus(statusString, pos, newValue):
 		newString+=element+";"
 	return newString
 	
+def say(charName, targetNum, sayString):
+	found=False
+	for char in party:
+		if char.name == charName:
+			found=True
+			break
+	if found == False:
+		return "Character not in party."
+	else:
+		foundTarget=False
+		targetNum=int(targetNum)
+		if targetNum <= len(currentRoom.thingsInRoom) and targetNum  >= 0:
+		
+			i=int(targetNum)-1
+			obj=currentRoom.thingsInRoom[i]
+			if isinstance(obj, Entity.Entity):
+				return obj.getResponse(sayString)
+			else:
+				return "You cannot talk to that."
+	
+		else:
+			return "List index out of range"
