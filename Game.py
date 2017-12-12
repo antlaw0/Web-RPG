@@ -269,9 +269,9 @@ def take(charName, objNum):
 				if char.hasCurrency() == True:
 					currencyObject=char.getCurrency()
 					currencyObject.quantity+=obj.quantity
-				else:
-					char.inventory.insert(0, obj)
-				currentRoom.thingsInRoom.remove(obj)
+				
+			char.inventory.insert(0, obj)
+			currentRoom.thingsInRoom.remove(obj)
 			return char.name+" takes "+obj.name
 		else:
 			return  "List index out of range."
