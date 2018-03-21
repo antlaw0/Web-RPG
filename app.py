@@ -126,7 +126,7 @@ def runGame():
 		message="Please log in."
 		return render_template('index.html',message=message)
 	
-@app.route('/executeCommand', methods=['POST','GET'])
+@app.route('/executeCommand', methods=['GET', 'POST'])
 def command():
     command=request.form['command']
     output=Game.main(session['id'], command)
