@@ -130,8 +130,8 @@ def runGame():
 def command():
     command=request.form['command']
     output=Game.main(session['id'], command)
-    return jsonify(output)
-
+    #return jsonify(output)
+	return render_template('game.html', output=output)
 
 #if __name__ == '__main__':
 #port = int(os.environ.get('PORT', 5000))
